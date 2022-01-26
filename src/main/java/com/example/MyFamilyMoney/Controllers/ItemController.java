@@ -29,23 +29,13 @@ public class ItemController {
         return "item-add";
     }
 
-       @PostMapping("/item/add")
+    @PostMapping("/item/add")
     public String itemsAdd(@RequestParam TypeOperation typeOperation, @RequestParam String name, @RequestParam String description, Model model) {
         Item item = new Item(typeOperation, name, description);
         itemRepository.save(item);
         return "redirect:/item";
     }
-    @GetMapping("/item/{id}")
-    public String itemDetails(@PathVariable(value = "id") long id, Model model) {
-        if (!itemRepository.existsById(id)) {
-            return "redirect:/item";
-        }
-        Optional<Item> item = itemRepository.findById(id);
-        ArrayList<Item> res = new ArrayList<>();
-        item.ifPresent(res::add);
-        model.addAttribute("item", res);
-        return "item-detail";
-    }
+
     @GetMapping("/item/{id}/edit")
     public String itemEdit(@PathVariable(value = "id") long id, Model model) {
         if (!itemRepository.existsById(id)) {
@@ -57,6 +47,7 @@ public class ItemController {
         model.addAttribute("item", res);
         return "item-edit";
     }
+
     @PostMapping("/item/{id}/edit")
     public String itemPostUpdate(@PathVariable(value = "id") long id, @RequestParam String name, @RequestParam String description, @RequestParam TypeOperation typeOperation, Model model) {
         Item item = itemRepository.findById(id).orElseThrow();
@@ -66,6 +57,7 @@ public class ItemController {
         itemRepository.save(item);
         return "redirect:/item";
     }
+
     @PostMapping("/item/{id}/remove")
     public String itemPostDelete(@PathVariable(value = "id") long id, Model model) {
         Item item = itemRepository.findById(id).orElseThrow();
