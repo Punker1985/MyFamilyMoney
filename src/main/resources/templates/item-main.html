@@ -13,14 +13,17 @@
 <div class="container mt-5">
     <h1>Виды операций</h1>
     <div th:each = "el : ${items}" class="alert alert-info mt-2">
-        <h3 th:text="${el.name}"/>
+        <p th:text="${el.name}"/>
         <p th:text="${el.description}"/>
+        <p> <span th:text="${el.typeOperation.displayValue}"/></p>
         <a th:href="'/item/' + ${el.id}" class="btn btn-warning">Детальнее</a>
     </div>
+
     <ul class="nav nav-pills">
         <li class="nav-item"><a href="/item/add" class="nav-link active" aria-current="page">Добавить вид операции</a></li>
     </ul>
 </div>
+<br>
 <div th:insert="blocks/footer :: footer"></div>
 </body>
 </html>

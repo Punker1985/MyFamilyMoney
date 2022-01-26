@@ -10,7 +10,7 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private TypeOperation operation;
+    private TypeOperation typeOperation;
     private String name;
     private String description;
 
@@ -25,12 +25,12 @@ public class Item {
         this.id = id;
     }
 
-    public TypeOperation getOperation() {
-        return operation;
+    public TypeOperation getTypeOperation() {
+        return typeOperation;
     }
 
-    public void setOperation(TypeOperation operation) {
-        this.operation = operation;
+    public void setTypeOperation(TypeOperation typeOperation) {
+        this.typeOperation = typeOperation;
     }
 
     public String getName() {
@@ -49,8 +49,8 @@ public class Item {
         this.description = description;
     }
 
-    public Item(TypeOperation operation, String name, String description) {
-        this.operation = operation;
+    public Item(TypeOperation typeOperation, String name, String description) {
+        this.typeOperation = typeOperation;
         this.name = name;
         this.description = description;
     }

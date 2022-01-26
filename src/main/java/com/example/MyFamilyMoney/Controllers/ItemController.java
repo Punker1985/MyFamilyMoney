@@ -6,10 +6,7 @@ import com.example.MyFamilyMoney.repo.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -32,9 +29,9 @@ public class ItemController {
         return "item-add";
     }
 
-    @PostMapping("/item/add")
-    public String itemsAdd(@RequestParam String name, @RequestParam String description, Model model) {
-        Item item = new Item(TypeOperation.RECEIPT, name, description);
+       @PostMapping("/item/add")
+    public String itemsAdd(@RequestParam TypeOperation typeOperation, @RequestParam String name, @RequestParam String description, Model model) {
+        Item item = new Item(typeOperation, name, description);
         itemRepository.save(item);
         return "redirect:/item";
     }
@@ -61,11 +58,11 @@ public class ItemController {
         return "item-edit";
     }
     @PostMapping("/item/{id}/edit")
-    public String itemPostUpdate(@PathVariable(value = "id") long id, @RequestParam String name, @RequestParam String description, Model model) {
+    public String itemPostUpdate(@PathVariable(value = "id") long id, @RequestParam String name, @RequestParam String description, @RequestParam TypeOperation typeOperation, Model model) {
         Item item = itemRepository.findById(id).orElseThrow();
         item.setName(name);
         item.setDescription(description);
-        item.setOperation(TypeOperation.RECEIPT);
+        item.setTypeOperation(typeOperation);
         itemRepository.save(item);
         return "redirect:/item";
     }

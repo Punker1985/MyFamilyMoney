@@ -13,9 +13,15 @@
     <form action="/item/add" method="post">
         <input type="text" name="name" placeholder="Введите название" class="form-control"><br>
         <input type="text" name="description" placeholder="Введите описание" class="form-control"><br>
+        <select name="typeOperation">
+            <option th:each="typeOperation : ${T(com.example.MyFamilyMoney.models.TypeOperation).values()}"
+                    th:value="${typeOperation}"
+                    th:text="${typeOperation.displayValue}"></option>
+        </select><br><br>
         <button type="submit" class="btn btn-success">Добавить вид операции</button>
-    </form>
 
+    </form>
+    <br>
     <div th:insert="blocks/footer :: footer"></div>
 </body>
 </html>

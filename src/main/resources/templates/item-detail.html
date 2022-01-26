@@ -14,7 +14,7 @@
     <div th:each = "el : ${item}" class="alert alert-info mt-2">
         <h3 th:text="${el.name}"/>
         <p th:text="${el.description}"/>
-        <p><b>Тип операции</b> <span th:text="${el.operation}"/></p>
+        <p> <span th:text="${el.typeOperation.displayValue}"/></p>
         <a th:href="'/item/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
         <form th:action="'/item/' + ${el.id} + '/remove'" method="post">
             <button class="btn btn-warning" type="submit">Удалить</button>
