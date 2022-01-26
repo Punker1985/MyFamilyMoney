@@ -37,17 +37,7 @@ public class СounteragentController {
         counteragentRepository.save(counteragent);
         return "redirect:/counteragent";
     }
-    @GetMapping("/counteragent/{id}")
-    public String counteragentDetails(@PathVariable(value = "id") long id, Model model) {
-        if (!counteragentRepository.existsById(id)) {
-            return "redirect:/conteragent";
-        }
-        Optional<Counteragent> counteragent = counteragentRepository.findById(id);
-        ArrayList<Counteragent> res = new ArrayList<>();
-        counteragent.ifPresent(res::add);
-        model.addAttribute("counteragent", res);
-        return "counteragent-detail";
-    }
+
     @GetMapping("/counteragent/{id}/edit")
     public String counteragentEdit(@PathVariable(value = "id") long id, Model model) {
         if (!counteragentRepository.existsById(id)) {
@@ -59,14 +49,16 @@ public class СounteragentController {
         model.addAttribute("counteragent", res);
         return "counteragent-edit";
     }
+
     @PostMapping("/counteragent/{id}/edit")
-    public String counteragentPostUpdate(@PathVariable(value = "id") long id, @RequestParam String name, @RequestParam String description,  Model model) {
+    public String counteragentPostUpdate(@PathVariable(value = "id") long id, @RequestParam String name, @RequestParam String description, Model model) {
         Counteragent counteragent = counteragentRepository.findById(id).orElseThrow();
         counteragent.setName(name);
         counteragent.setDescription(description);
         counteragentRepository.save(counteragent);
         return "redirect:/counteragent";
     }
+
     @PostMapping("/counteragent/{id}/remove")
     public String counteragentPostDelete(@PathVariable(value = "id") long id, Model model) {
         Counteragent counteragent = counteragentRepository.findById(id).orElseThrow();
