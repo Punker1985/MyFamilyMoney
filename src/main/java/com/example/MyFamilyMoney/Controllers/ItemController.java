@@ -18,7 +18,7 @@ public class ItemController {
     private ItemRepository itemRepository;
 
     @GetMapping("/item")
-    public String blogMain(Model model) {
+    public String itemMain(Model model) {
         Iterable<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
         return "item-main";

@@ -16,6 +16,11 @@ public class Account {
     public Account() {
     }
 
+    public Account(String name, AccountType type) {
+        this.name = name;
+        this.type = type;
+    }
+
     public Long getId() {
         return id;
     }
