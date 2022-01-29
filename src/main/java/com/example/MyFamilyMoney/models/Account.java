@@ -9,16 +9,16 @@ public class Account {
     private Long id;
     private AccountType type;
     @ManyToOne
-    @JoinColumn(name="user_id")
     private User user;
     private String name;
 
     public Account() {
     }
 
-    public Account(String name, AccountType type) {
+    public Account(String name, AccountType type, User user) {
         this.name = name;
         this.type = type;
+        this.user = user;
     }
 
     public Long getId() {

@@ -3,9 +3,12 @@ package com.example.MyFamilyMoney.Controllers;
 import com.example.MyFamilyMoney.models.Account;
 import com.example.MyFamilyMoney.models.AccountType;
 import com.example.MyFamilyMoney.models.Counteragent;
+import com.example.MyFamilyMoney.models.User;
 import com.example.MyFamilyMoney.repo.AccountRepository;
 import com.example.MyFamilyMoney.repo.CounteragentRepository;
+import com.example.MyFamilyMoney.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +23,13 @@ import java.util.Optional;
 public class accountController {
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/account")
-    public String accountMain(Model model) {
-        Iterable<Account> accounts = accountRepository.findAll();
+    public String accountMain(@CurrentSecurityContext(expression="authentication?.name") String username, Model model) {
+        User user = userRepository.findByUsername(username);
+        Iterable<Account> accounts = accountRepository.findAllByUser(user);
         model.addAttribute("accounts", accounts);
         return "account-main";
     }
@@ -34,8 +40,10 @@ public class accountController {
     }
 
     @PostMapping("/account/add")
-    public String accountAdd(@RequestParam String name, @RequestParam AccountType type, Model model) {
-        Account account = new Account(name, type);
+    public String accountAdd(@RequestParam String name, @RequestParam AccountType type, @CurrentSecurityContext(expression="authentication?.name") String username, Model model) {
+        User user = userRepository.findByUsername(username);
+        Account account = new Account(name, type, user);
+        String q = user.getUsername();
         accountRepository.save(account);
         return "redirect:/account";
     }
