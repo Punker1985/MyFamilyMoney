@@ -17,7 +17,9 @@
             счет</a></li>
     </ul>
     <div th:each="el : ${accounts}" class="alert alert-info mt-2">
-        <p th:text="${el.name}"/>
+        <p th:text="название+':'+'  '+${el.name}"/>
+        <p th:text="начальный+' '+остаток+':'+'  '+${el.startBalance}"/>
+        <p th:text="конечный+' '+остаток+':'+'  '+${el.endBalance}"/>
         <p> <span th:text="${el.type.displayValue}"/></p>
         <a th:href="'/account/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
         <form th:action="'/account/' + ${el.id} + '/remove'" method="post">

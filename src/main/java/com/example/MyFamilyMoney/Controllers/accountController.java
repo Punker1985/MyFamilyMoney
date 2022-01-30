@@ -40,10 +40,9 @@ public class accountController {
     }
 
     @PostMapping("/account/add")
-    public String accountAdd(@RequestParam String name, @RequestParam AccountType type, @CurrentSecurityContext(expression="authentication?.name") String username, Model model) {
+    public String accountAdd(@RequestParam String name, @RequestParam AccountType type, @RequestParam String startBalance,@CurrentSecurityContext(expression="authentication?.name") String username, Model model) {
         User user = userRepository.findByUsername(username);
-        Account account = new Account(name, type, user);
-        String q = user.getUsername();
+        Account account = new Account(name, type, user, Long.parseLong(startBalance), Long.parseLong(startBalance));
         accountRepository.save(account);
         return "redirect:/account";
     }

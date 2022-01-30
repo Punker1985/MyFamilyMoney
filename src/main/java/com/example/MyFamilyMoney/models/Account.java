@@ -11,14 +11,18 @@ public class Account {
     @ManyToOne
     private User user;
     private String name;
+    private Long startBalance;
+    private Long endBalance;
 
     public Account() {
     }
 
-    public Account(String name, AccountType type, User user) {
+    public Account(String name, AccountType type, User user, Long startBalance, Long endBalance) {
         this.name = name;
         this.type = type;
         this.user = user;
+        this.startBalance = startBalance;
+        this.endBalance = endBalance;
     }
 
     public Long getId() {
@@ -51,5 +55,21 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getStartBalance() {
+        return startBalance;
+    }
+
+    public void setStartBalance(Long startBalance) {
+        this.startBalance = startBalance;
+    }
+
+    public Long getEndBalance() {
+        return endBalance;
+    }
+
+    public void setEndBalance(Long endBalance) {
+        this.endBalance = endBalance;
     }
 }

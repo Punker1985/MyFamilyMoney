@@ -12,11 +12,14 @@
   <h1>Счета</h1>
   <form action="/account/add" method="post">
     <input type="text" name="name" placeholder="Введите название" class="form-control"><br>
+    <input type="text" name="startBalance" placeholder="Введите начальный остаток" class="form-control"><br>
     <select name="type">
       <option th:each="type : ${T(com.example.MyFamilyMoney.models.AccountType).values()}"
               th:value="${type}"
               th:text="${type.displayValue}"></option>
-    </select><br><br>
+    </select>
+    <br><br>
+
     <button type="submit" class="btn btn-success">Добавить счет</button>
 
   </form>
