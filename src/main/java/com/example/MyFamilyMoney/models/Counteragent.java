@@ -17,6 +17,10 @@ public class Counteragent {
     public Counteragent() {
     }
 
+    public String toString(){
+        return Long.toString(this.id);
+    }
+
     public Counteragent(String name, String description) {
         this.name = name;
         this.description = description;

@@ -2,6 +2,7 @@ package com.example.MyFamilyMoney.models;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 public class Operations {
@@ -9,7 +10,6 @@ public class Operations {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
     private String description;
     @ManyToOne
     private Account account;
@@ -17,8 +17,17 @@ public class Operations {
     private Counteragent counteragent;
     @ManyToOne
     private Item item;
-    private Instant date;
-    private float amount;
+    private LocalDateTime date;
+    private Long amount;
+
+    public Operations(String description, Account account, Counteragent counteragent, LocalDateTime date, Item item, Long amount) {
+        this.description = description;
+        this.account = account;
+        this.counteragent = counteragent;
+        this.item = item;
+        this.date = date;
+        this.amount = amount;
+    }
 
     public Operations() {
     }
@@ -29,14 +38,6 @@ public class Operations {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -71,19 +72,19 @@ public class Operations {
         this.item = item;
     }
 
-    public Instant getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Instant date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public float getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
 }

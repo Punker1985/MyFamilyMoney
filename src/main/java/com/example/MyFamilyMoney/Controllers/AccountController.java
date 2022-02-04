@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Controller
-public class accountController {
+public class AccountController {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -42,7 +42,9 @@ public class accountController {
     @PostMapping("/account/add")
     public String accountAdd(@RequestParam String name, @RequestParam AccountType type, @RequestParam String startBalance,@CurrentSecurityContext(expression="authentication?.name") String username, Model model) {
         User user = userRepository.findByUsername(username);
-        Account account = new Account(name, type, user, Long.parseLong(startBalance), Long.parseLong(startBalance));
+        double startBalanceDouble = Double.parseDouble(startBalance)*100;
+        long startBalanceLong = (long) startBalanceDouble;
+        Account account = new Account(name, type, user, startBalanceLong, startBalanceLong);
         accountRepository.save(account);
         return "redirect:/account";
     }

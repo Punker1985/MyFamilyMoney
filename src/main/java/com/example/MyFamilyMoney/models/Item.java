@@ -17,6 +17,10 @@ public class Item {
     public Item() {
     }
 
+    public String toString(){
+        return Long.toString(this.id);
+    }
+
     public Long getId() {
         return id;
     }
