@@ -17,12 +17,12 @@
             операцию</a></li>
     </ul>
     <div th:each="el : ${operations}" class="alert alert-info mt-2">
-        <p th:text="описание+':'+'  '+${el.description}"/>
         <p th:text="сумма+':'+'  '+${el.amount/100}"/>
         <p th:text="счет+':'+'  '+${el.account.getName}"/>
         <p th:text="статья+':'+'  '+${el.item.getName}"/>
         <p th:text="контрагент+':'+'  '+${el.counteragent.getName}"/>
         <p th:text="дата+':'+'  '+${el.date}"/>
+        <p th:text="описание+':'+'  '+${el.description}"/>
         <a th:href="'/operations/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
         <form th:action="'/operations/' + ${el.id} + '/remove'" method="post">
             <button class="btn btn-warning" type="submit">Удалить</button>

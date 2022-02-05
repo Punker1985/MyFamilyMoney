@@ -28,7 +28,7 @@ public class OperationsContoller {
     private CounteragentRepository counteragentRepository;
 
     @GetMapping("/operations")
-    public String operationsMain(@CurrentSecurityContext(expression="authentication?.name") String username, Model model) {
+    public String operationsMain(@CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
         User user = userRepository.findByUsername(username);
         Iterable<Operations> operations = operationsRepository.findAll();
         model.addAttribute("operations", operations);
@@ -36,7 +36,7 @@ public class OperationsContoller {
     }
 
     @GetMapping("/operations/add")
-    public String operationsAdd(@CurrentSecurityContext(expression="authentication?.name") String username, Model model) {
+    public String operationsAdd(@CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
         User user = userRepository.findByUsername(username);
         Iterable<Account> accounts = accountRepository.findAllByUser(user);
         Iterable<Item> items = itemRepository.findAll();
@@ -48,18 +48,23 @@ public class OperationsContoller {
     }
 
     @PostMapping("/operations/add")
-    public String operationsAdd(@RequestParam String description, @RequestParam String amount, @RequestParam  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date, @RequestParam Account account, @RequestParam Item item, @RequestParam Counteragent counteragent, Model model) {
-        double amountDouble = Double.parseDouble(amount)*100;
+    public String operationsAdd(@RequestParam String description, @RequestParam String amount, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date, @RequestParam Account account, @RequestParam Item item, @RequestParam Counteragent counteragent, Model model) {
+        double amountDouble = Double.parseDouble(amount) * 100;
         long amountLong = (long) amountDouble;
         Operations operation = new Operations(description, account, counteragent, date, item, amountLong);
         operationsRepository.save(operation);
-        account.setEndBalance(account.getEndBalance() - amountLong);
+        if (item.getTypeOperation().equals(TypeOperation.SPENDING)) {
+            account.setEndBalance(account.getEndBalance() - amountLong);
+        }
+        else {
+            account.setEndBalance(account.getEndBalance() + amountLong);
+        }
         accountRepository.save(account);
         return "redirect:/operations";
     }
 
     @GetMapping("/operations/{id}/edit")
-    public String operationsEdit(@PathVariable(value = "id") long id, @CurrentSecurityContext(expression="authentication?.name") String username, Model model) {
+    public String operationsEdit(@PathVariable(value = "id") long id, @CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
         if (!operationsRepository.existsById(id)) {
             return "redirect:/operations";
         }
@@ -78,11 +83,16 @@ public class OperationsContoller {
     }
 
     @PostMapping("/operations/{id}/edit")
-    public String operationsUpdate(@PathVariable(value = "id") long id, @RequestParam String description, @RequestParam String amount, @RequestParam  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date, @RequestParam Account account, @RequestParam Item item, @RequestParam Counteragent counteragent, Model model) {
+    public String operationsUpdate(@PathVariable(value = "id") long id, @RequestParam String description, @RequestParam String amount, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date, @RequestParam Account account, @RequestParam Item item, @RequestParam Counteragent counteragent, Model model) {
         Operations operations = operationsRepository.findById(id).orElseThrow();
-        double amountDouble = Double.parseDouble(amount)*100;
+        double amountDouble = Double.parseDouble(amount) * 100;
         long amountLong = (long) amountDouble;
-        account.setEndBalance(account.getEndBalance() + (operations.getAmount() - amountLong));
+        if (item.getTypeOperation().equals(TypeOperation.SPENDING)) {
+            account.setEndBalance(account.getEndBalance() + (operations.getAmount() - amountLong));
+        }
+        else {
+            account.setEndBalance(account.getEndBalance() - (operations.getAmount() - amountLong));
+        }
         accountRepository.save(account);
         operations.setDescription(description);
         operations.setAmount(amountLong);
@@ -98,7 +108,12 @@ public class OperationsContoller {
     public String operationsDelete(@PathVariable(value = "id") long id, Model model) {
         Operations operations = operationsRepository.findById(id).orElseThrow();
         Account account = operations.getAccount();
-        account.setEndBalance(account.getEndBalance() + operations.getAmount());
+        if (operations.getItem().getTypeOperation().equals(TypeOperation.SPENDING)) {
+            account.setEndBalance(account.getEndBalance() + operations.getAmount());
+        }
+        else {
+            account.setEndBalance(account.getEndBalance() - operations.getAmount());
+        }
         operationsRepository.delete(operations);
         accountRepository.save(account);
         return "redirect:/operations";
