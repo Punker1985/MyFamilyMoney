@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -41,9 +42,13 @@ public class OperationsContoller {
         Iterable<Account> accounts = accountRepository.findAllByUser(user);
         Iterable<Item> items = itemRepository.findAll();
         Iterable<Counteragent> counteragents = counteragentRepository.findAll();
+        LocalDateTime date = LocalDateTime.now();
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        String dateNowString = date.format(formatterDate);
         model.addAttribute("accounts", accounts);
         model.addAttribute("items", items);
         model.addAttribute("counteragents", counteragents);
+        model.addAttribute("dateNow", dateNowString);
         return "operations-add";
     }
 

@@ -9,32 +9,26 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5 mb-5">
-    <h1>Операции</h1>
-    <form action="/operations/add" method="post">
+    <h1>Трансфер</h1>
+    <form action="/transfers/add" method="post">
         <input type="text" name="amount" placeholder="Введите сумму операции" class="form-control"><br>
         <input type="datetime-local" th:value="${dateNow}" id="localdate" name="date"/>
-        <select name="account">
-            <option th:disabled>Выберите счет</option>
+        <select name="accountSpending">
+            <option th:disabled>Выберите счет списания</option>
             <option th:each="account : ${accounts}"
                     th:value="${account}"
-                    th:text="${account.getName}+' '+'('+${account.getEndBalance/100}+')'"></option>
+                    th:text="${account.getName}+' '+'('+${account.getUser.getUsername}+')'"></option>
         </select>
-        <select name="item">
-            <option th:disabled>Выберите вид операции</option>
-            <option th:each="item : ${items}"
-                    th:value="${item}"
-                    th:text="${item.getName}"></option>
-        </select>
-        <select name="counteragent">
-            <option th:disabled>Выберите контрагента</option>
-            <option th:each="counteragent : ${counteragents}"
-                    th:value="${counteragent}"
-                    th:text="${counteragent.getName}"></option>
+        <select name="accountReceipt">
+            <option th:disabled>Выберите счет зачисления</option>
+            <option th:each="account : ${accounts}"
+                    th:value="${account}"
+                    th:text="${account.getName}+' '+'('+${account.getUser.getUsername}+')'"></option>
         </select>
         <br><br>
         <input type="text" name="description" placeholder="Введите описание" class="form-control"><br>
         <br>
-        <button type="submit" class="btn btn-success">Добавить операцию</button>
+        <button type="submit" class="btn btn-success">Добавить трансфер</button>
 
     </form>
     <br>

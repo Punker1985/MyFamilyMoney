@@ -27,6 +27,14 @@ public class Transfer {
         this.description = description;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Account getAccountSpending() {
         return accountSpending;
     }
