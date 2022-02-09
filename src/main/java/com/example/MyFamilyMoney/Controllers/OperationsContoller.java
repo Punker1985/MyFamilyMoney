@@ -36,11 +36,11 @@ public class OperationsContoller {
         return "operations-main";
     }
 
-    @GetMapping("/operations/add")
+    @GetMapping("/operations/add/spending")
     public String operationsAdd(@CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
         User user = userRepository.findByUsername(username);
         Iterable<Account> accounts = accountRepository.findAllByUser(user);
-        Iterable<Item> items = itemRepository.findAll();
+        Iterable<Item> items = itemRepository.findAllByTypeOperation(TypeOperation.SPENDING);
         Iterable<Counteragent> counteragents = counteragentRepository.findAll();
         LocalDateTime date = LocalDateTime.now();
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -49,10 +49,10 @@ public class OperationsContoller {
         model.addAttribute("items", items);
         model.addAttribute("counteragents", counteragents);
         model.addAttribute("dateNow", dateNowString);
-        return "operations-add";
+        return "operations-add-spending";
     }
 
-    @PostMapping("/operations/add")
+    @PostMapping("/operations/add/spending")
     public String operationsAdd(@RequestParam String description, @RequestParam String amount, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date, @RequestParam Account account, @RequestParam Item item, @RequestParam Counteragent counteragent, Model model) {
         double amountDouble = Double.parseDouble(amount) * 100;
         long amountLong = (long) amountDouble;
@@ -65,13 +65,45 @@ public class OperationsContoller {
             account.setEndBalance(account.getEndBalance() + amountLong);
         }
         accountRepository.save(account);
-        return "redirect:/operations";
+        return "redirect:/transactions/" + account.getId();
+    }
+
+    @GetMapping("/operations/add/receipt")
+    public String operationsAddReceipt(@CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
+        User user = userRepository.findByUsername(username);
+        Iterable<Account> accounts = accountRepository.findAllByUser(user);
+        Iterable<Item> items = itemRepository.findAllByTypeOperation(TypeOperation.RECEIPT);
+        Iterable<Counteragent> counteragents = counteragentRepository.findAll();
+        LocalDateTime date = LocalDateTime.now();
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        String dateNowString = date.format(formatterDate);
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("items", items);
+        model.addAttribute("counteragents", counteragents);
+        model.addAttribute("dateNow", dateNowString);
+        return "operations-add-receipt";
+    }
+
+    @PostMapping("/operations/add/receipt")
+    public String operationsAddReceipt(@RequestParam String description, @RequestParam String amount, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime date, @RequestParam Account account, @RequestParam Item item, @RequestParam Counteragent counteragent, Model model) {
+        double amountDouble = Double.parseDouble(amount) * 100;
+        long amountLong = (long) amountDouble;
+        Operations operation = new Operations(description, account, counteragent, date, item, amountLong);
+        operationsRepository.save(operation);
+        if (item.getTypeOperation().equals(TypeOperation.SPENDING)) {
+            account.setEndBalance(account.getEndBalance() - amountLong);
+        }
+        else {
+            account.setEndBalance(account.getEndBalance() + amountLong);
+        }
+        accountRepository.save(account);
+        return "redirect:/transactions/" + account.getId();
     }
 
     @GetMapping("/operations/{id}/edit")
     public String operationsEdit(@PathVariable(value = "id") long id, @CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
         if (!operationsRepository.existsById(id)) {
-            return "redirect:/operations";
+            return "redirect:/";
         }
         Optional<Operations> operations = operationsRepository.findById(id);
         ArrayList<Operations> res = new ArrayList<>();
@@ -106,7 +138,7 @@ public class OperationsContoller {
         operations.setAccount(account);
         operations.setCounteragent(counteragent);
         operationsRepository.save(operations);
-        return "redirect:/operations";
+        return "redirect:/transactions/" + account.getId();
     }
 
     @PostMapping("/operations/{id}/remove")
@@ -121,7 +153,7 @@ public class OperationsContoller {
         }
         operationsRepository.delete(operations);
         accountRepository.save(account);
-        return "redirect:/operations";
+        return "redirect:/transactions/" + account.getId();
 
     }
 }

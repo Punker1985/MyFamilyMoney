@@ -9,8 +9,12 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5 mb-5">
-    <h1>Операции</h1>
-    <form action="/operations/add" method="post">
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a style="color:red">списание</a>
+        <li class="nav-item"><a href="/operations/add/receipt" class="nav-link">поступление</a></li>
+        <li class="nav-item"><a href="/transfers/add" class="nav-link">трансфер</a></li>
+    </ul>
+    <form action="/operations/add/spending" method="post">
         <input type="text" name="amount" placeholder="Введите сумму операции" class="form-control"><br>
         <input type="datetime-local" th:value="${dateNow}" id="localdate" name="date"/>
         <select name="account">

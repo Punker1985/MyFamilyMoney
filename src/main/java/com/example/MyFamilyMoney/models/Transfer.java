@@ -4,35 +4,25 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Transfer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Transfer extends Transactions{
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long id;
     @ManyToOne
     private Account accountSpending;
     @ManyToOne
     private Account accountReceipt;
-    private Long amount;
-    private LocalDateTime date;
-    private String description;
+//    private Long amount;
+//    private LocalDateTime date;
+//    private String description;
 
     public Transfer() {
     }
 
     public Transfer(Account accountSpending, Account accountReceipt, Long amount, LocalDateTime date, String description) {
+        super(amount, description, date);
         this.accountSpending = accountSpending;
         this.accountReceipt = accountReceipt;
-        this.amount = amount;
-        this.date = date;
-        this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Account getAccountSpending() {
@@ -49,29 +39,5 @@ public class Transfer {
 
     public void setAccountReceipt(Account accountReceipt) {
         this.accountReceipt = accountReceipt;
-    }
-
-    public Long getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Long amount) {
-        this.amount = amount;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

@@ -12,7 +12,7 @@
     <h1>Редактирование трансфера</h1>
     <div th:each="el : ${transfers}">
         <form method="post">
-            <input type="text" th:value="${el.amount/100}" name="amount" placeholder="Введите сумму операции" class="form-control"><br>
+            <input type="text" th:value="${el.amount*0.01}" name="amount" placeholder="Введите сумму операции" class="form-control"><br>
             <input type="datetime-local" th:value="${el.date}" id="localdate" name="date"/>
             <select name="accountSpending">
                 <option th:value="${el.accountSpending}" th:text="${el.accountSpending.getName}+' '+'('+${el.accountSpending.getUser.getUsername}+')'"></option>

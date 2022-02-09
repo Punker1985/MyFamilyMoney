@@ -56,13 +56,13 @@ public class TransferController {
         accountReceipt.setEndBalance(accountReceipt.getEndBalance() + amountLong);
         accountRepository.save(accountReceipt);
         accountRepository.save(accountSpending);
-        return "redirect:/transfers";
+        return "redirect:/transactions" + accountSpending.getId();
     }
 
     @GetMapping("/transfers/{id}/edit")
     public String transfersEdit(@PathVariable(value = "id") long id, @CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
         if (!transfersRepository.existsById(id)) {
-            return "redirect:/transfers";
+            return "redirect:/";
         }
         Optional<Transfer> transfers = transfersRepository.findById(id);
         ArrayList<Transfer> res = new ArrayList<>();
@@ -89,7 +89,7 @@ public class TransferController {
         transfer.setAccountReceipt(accountReceipt);
         transfer.setAccountSpending(accountSpending);
         transfersRepository.save(transfer);
-        return "redirect:/transfers";
+        return "redirect:/transactions/" + accountSpending.getId();
     }
 
     @PostMapping("/transfers/{id}/remove")
@@ -102,7 +102,7 @@ public class TransferController {
         transfersRepository.delete(transfer);
         accountRepository.save(accountReceipt);
         accountRepository.save(accountSpending);
-        return "redirect:/transfers";
+        return "redirect:/transactions/" + accountSpending.getId();
 
     }
 }
