@@ -12,7 +12,11 @@
                     <li><a href="/about" class="nav-link px-2 text-white">About</a></li>
                 </ul>
 
-
+                <div>
+                    <form th:action="@{/logout}" method="post">
+                        <input class="nav-item" type="submit" value="Sign Out"/>
+                    </form>
+                </div>
             </div>
         </div>
     </header>

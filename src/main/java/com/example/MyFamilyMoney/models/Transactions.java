@@ -14,6 +14,7 @@ public class Transactions {
     private Long amount;
     private String description;
     private LocalDateTime date;
+    private TypeOperation typeOperation;
 
     public Transactions(Long amount, String description, LocalDateTime date) {
         this.amount = amount;
@@ -54,5 +55,13 @@ public class Transactions {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public TypeOperation getTypeOperation() {
+        return typeOperation;
+    }
+
+    public void setTypeOperation(TypeOperation typeOperation) {
+        this.typeOperation = typeOperation;
     }
 }

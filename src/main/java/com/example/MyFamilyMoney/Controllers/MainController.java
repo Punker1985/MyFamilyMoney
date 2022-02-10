@@ -40,14 +40,18 @@ public class MainController {
         Account account = accountRepository.findById(id).orElseThrow();
         Iterable<Operations> operations = operationsRepository.findAllByAccount(account);
         Iterable<Transfer> transfersReceipt = transfersRepository.findAllByAccountReceipt(account);
+        transfersReceipt.forEach(transfer -> transfer.setTypeOperation(TypeOperation.RECEIPT));
         Iterable<Transfer> transfersSpending = transfersRepository.findAllByAccountSpending(account);
+        transfersSpending.forEach(transfer -> transfer.setTypeOperation(TypeOperation.SPENDING));
         List transactions = new ArrayList<Transactions>();
         operations.forEach(transactions::add);
         transfersReceipt.forEach(transactions::add);
         transfersSpending.forEach(transactions::add);
         transactions.sort(Comparator.comparing(Transactions::getDate).reversed());
         model.addAttribute("transactions", transactions);
-        model.addAttribute("title", "Транзакции");
+        model.addAttribute("title", "Транзакции по счету");
+        model.addAttribute("accountName", account.getName());
+        model.addAttribute("idAccount", account.getId());
         return "transaction";
     }
 

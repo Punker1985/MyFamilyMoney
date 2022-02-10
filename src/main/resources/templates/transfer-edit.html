@@ -28,8 +28,12 @@
             </select>
             <br><br>
             <input type="text" th:value="${el.description}" name="description" placeholder="Введите описание" class="form-control"><br>
-            <br><br>
+            <br>
             <button type="submit" class="btn btn-success">Обновить</button>
+        </form>
+        <br>
+        <form th:action="'/transfers/' + ${el.id} + '/remove'" method="post">
+            <button class="btn btn-warning" type="submit">Удалить</button>
         </form>
     </div>
     <br>

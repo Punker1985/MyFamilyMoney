@@ -34,13 +34,15 @@ public class TransferController {
         return "transfer-main";
     }
 
-    @GetMapping("/transfers/add")
-    public String transfersAdd(@CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
+    @GetMapping("/transfers{idAccount}/add")
+    public String transfersAdd(@PathVariable(value="idAccount") Long idAccount, @CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
         User user = userRepository.findByUsername(username);
         Iterable<Account> accounts = accountRepository.findAll();
+        Account account = accountRepository.findById(idAccount).orElseThrow();
         LocalDateTime date = LocalDateTime.now();
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         String dateNowString = date.format(formatterDate);
+        model.addAttribute("activAccount", account);
         model.addAttribute("accounts", accounts);
         model.addAttribute("dateNow", dateNowString);
         return "transfer-add";
@@ -51,12 +53,15 @@ public class TransferController {
         double amountDouble = Double.parseDouble(amount) * 100;
         long amountLong = (long) amountDouble;
         Transfer transfer = new Transfer(accountSpending, accountReceipt, amountLong, date, description);
+        if (transfer.getDescription().equals("")) {
+            transfer.setDescription("трансфер");
+        }
         transfersRepository.save(transfer);
         accountSpending.setEndBalance(accountSpending.getEndBalance() - amountLong);
         accountReceipt.setEndBalance(accountReceipt.getEndBalance() + amountLong);
         accountRepository.save(accountReceipt);
         accountRepository.save(accountSpending);
-        return "redirect:/transactions" + accountSpending.getId();
+        return "redirect:/transactions/" + accountSpending.getId();
     }
 
     @GetMapping("/transfers/{id}/edit")
@@ -88,6 +93,9 @@ public class TransferController {
         transfer.setDate(date);
         transfer.setAccountReceipt(accountReceipt);
         transfer.setAccountSpending(accountSpending);
+        if (transfer.getDescription().equals("")) {
+            transfer.setDescription("трансфер");
+        }
         transfersRepository.save(transfer);
         return "redirect:/transactions/" + accountSpending.getId();
     }

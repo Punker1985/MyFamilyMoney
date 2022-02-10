@@ -10,15 +10,15 @@
 
 <div class="container mt-5 mb-5">
   <ul class="nav nav-pills">
-    <li class="nav-item"><a href="/operations/add/spending" class="nav-link">списание</a>
+    <li class="nav-item"><a th:href="'/operations' + ${activAccount} + '/add/spending'" class="nav-link">списание</a>
     <li class="nav-item"><a style="color:red">поступление</a></li>
-    <li class="nav-item"><a href="/transfers/add" class="nav-link">трансфер</a></li>
+    <li class="nav-item"><a th:href="'/transfers' + ${activAccount} + '/add'" class="nav-link">трансфер</a></li>
   </ul>
   <form action="/operations/add/receipt" method="post">
     <input type="text" name="amount" placeholder="Введите сумму операции" class="form-control"><br>
     <input type="datetime-local" th:value="${dateNow}" id="localdate" name="date"/>
     <select name="account">
-      <option th:disabled>Выберите счет</option>
+      <option th:value="${activAccount}" th:text="${activAccount.getName}"></option>
       <option th:each="account : ${accounts}"
               th:value="${account}"
               th:text="${account.getName}+' '+'('+${account.getEndBalance/100}+')'"></option>

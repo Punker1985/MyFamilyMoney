@@ -7,18 +7,21 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
-
 <div class="container mt-5">
-    <h1>Главная страница</h1>
+    <h2 th:text="${title} + ':' + ' ' + ${accountName}"></h2>
     <ul class="nav nav-pills">
-        <li class="nav-item"><a href="/operations/add/spending" class="nav-link active" aria-current="page">Добавить</a></li>
+        <li class="nav-item"><a th:href="'/operations' + ${idAccount} + '/add/spending'" class="nav-link active" aria-current="page">Добавить</a></li>
     </ul>
     <div th:each="el : ${transactions}" class="alert alert-info mt-2">
         <a th:href="'/transaction/' + ${el.id}" style="text-decoration: none; ">
-            <p th:text="${#numbers.formatDecimal(el.amount*0.01,1,2)} + ' ' + 'RUB'"/>
-            <p th:text="${#temporals.format(el.date, 'dd-MM-yyyy HH:mm')}"/>
-            <p th:text="${el.description}"/>
-            <p th:if="${el.description.equals('')}" th:text="'не задано описание'"/>
+            <div th:if="${el.typeOperation.displayValue.equals('списание')}" style="color:red">
+                <p th:text="${el.description} + '   ' + ${#numbers.formatDecimal(el.amount*0.01,1,2)} + ' ' + 'RUB'"/>
+                <p th:text="${#temporals.format(el.date, 'dd MMM yyyy г. в HH:mm')}"/>
+            </div>
+            <div th:if="${el.typeOperation.displayValue.equals('поступление')}" style="color:green">
+                <p th:text="${el.description} + '   ' + ${#numbers.formatDecimal(el.amount*0.01,1,2)} + ' ' + 'RUB'"/>
+                <p th:text="${#temporals.format(el.date, 'dd MMM yyyy г. в HH:mm')}"/>
+            </div>
         </a>
     </div>
     <div th:insert="blocks/footer :: footer"></div>

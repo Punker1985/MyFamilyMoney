@@ -18,8 +18,8 @@
     </ul>
     <div th:each="el : ${accounts}" class="alert alert-info mt-2">
         <p th:text="название+':'+'  '+${el.name}"/>
-        <p th:text="начальный+' '+остаток+':'+'  '+${el.startBalance/100}"/>
-        <p th:text="конечный+' '+остаток+':'+'  '+${el.endBalance/100}"/>
+        <p th:text="начальный+' '+остаток+':'+'  '+${#numbers.formatDecimal(el.startBalance*0.01,1,2)} + ' ' + 'RUB'"/>
+        <p th:text="конечный+' '+остаток+':'+'  '+${#numbers.formatDecimal(el.endBalance*0.01,1,2)} + ' ' + 'RUB'"/>
         <p> <span th:text="${el.type.displayValue}"/></p>
         <a th:href="'/account/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
         <form th:action="'/account/' + ${el.id} + '/remove'" method="post">

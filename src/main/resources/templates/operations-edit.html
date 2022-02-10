@@ -12,7 +12,7 @@
     <h1>Редактирование операции</h1>
     <div th:each="el : ${operations}">
         <form method="post">
-            <input type="text" th:value="${el.amount/100}" name="amount" placeholder="Введите сумму операции" class="form-control"><br>
+            <input type="text" th:value="${#numbers.formatDecimal(el.amount*0.01,1,2)}" name="amount" placeholder="Введите сумму операции" class="form-control"><br>
             <input type="datetime-local" th:value="${el.date}" id="localdate" name="date"/>
             <select name="account">
                 <option th:value="${el.account}" th:text="${el.account.getName}"></option>
@@ -32,10 +32,14 @@
                         th:value="${counteragent}"
                         th:text="${counteragent.getName}"></option>
             </select>
-            <br>
-            <input type="text" th:value="${el.description}" name="description" placeholder="Введите описание" class="form-control"><br>
             <br><br>
+            <input type="text" th:value="${el.description}" name="description" placeholder="Введите описание" class="form-control"><br>
+            <br>
             <button type="submit" class="btn btn-success">Обновить</button>
+            </form>
+        <br>
+        <form th:action="'/operations/' + ${el.id} + '/remove'" method="post">
+            <button class="btn btn-warning" type="submit">Удалить</button>
         </form>
     </div>
     <br>
