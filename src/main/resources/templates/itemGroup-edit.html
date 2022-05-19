@@ -10,9 +10,9 @@
 
 <div class="container mt-5 mb-5">
     <h1>Редактирование статьи</h1>
-    <div th:each="el : ${item}">
+    <div th:each="el : ${itemGroup}">
         <form method="post">
-            <input type="text" th:value="${el.name}" name="name" placeholder="Введите название статьи" class="form-control"><br>
+            <input type="text" th:value="${el.name}" name="name" placeholder="Введите название группы" class="form-control"><br>
             <select name="typeOperation">
                 <option th:value="${el.typeOperation}" th:text="${el.typeOperation.displayValue}"></option>
                 <option th:each="typeOperation : ${T(com.example.MyFamilyMoney.models.TypeOperation).values()}"

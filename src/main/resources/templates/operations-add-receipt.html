@@ -21,13 +21,15 @@
       <option th:value="${activAccount}" th:text="${activAccount.getName}"></option>
       <option th:each="account : ${accounts}"
               th:value="${account}"
-              th:text="${account.getName}+' '+'('+${account.getEndBalance/100}+')'"></option>
+              th:text="${account.getName}+' '+'('+${account.getEndBalance/100}+')'">
+      </option>
     </select>
     <select name="item">
-      <option th:disabled>Выберите вид операции</option>
-      <option th:each="item : ${items}"
-              th:value="${item}"
-              th:text="${item.getName}"></option>
+      <optgroup th:each="itemGroup : ${itemGroups}" th:label="${itemGroup.name}">
+        <option th:each="item : ${itemGroup.items}"
+                th:value="${item}"
+                th:text="${item.name}"></option>
+      </optgroup>>
     </select>
     <select name="counteragent">
       <option th:disabled>Выберите контрагента</option>

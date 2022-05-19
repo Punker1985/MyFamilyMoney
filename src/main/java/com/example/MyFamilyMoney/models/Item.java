@@ -1,9 +1,6 @@
 package com.example.MyFamilyMoney.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Item {
@@ -12,7 +9,12 @@ public class Item {
     private Long id;
     private TypeOperation typeOperation;
     private String name;
-    private String description;
+    @ManyToOne
+    @JoinColumn(name="item_group_id", nullable = false)
+    private ItemGroup itemGroup;
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
 
     public Item() {
     }
@@ -45,17 +47,25 @@ public class Item {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public ItemGroup getItemGroup() {
+        return itemGroup;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setItemGroup(ItemGroup itemGroup) {
+        this.itemGroup = itemGroup;
     }
 
-    public Item(TypeOperation typeOperation, String name, String description) {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Item(TypeOperation typeOperation, String name, ItemGroup itemGroup) {
         this.typeOperation = typeOperation;
         this.name = name;
-        this.description = description;
+        this.itemGroup = itemGroup;
     }
 }

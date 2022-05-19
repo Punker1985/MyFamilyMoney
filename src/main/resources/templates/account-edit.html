@@ -23,6 +23,11 @@
             <br>
             <button type="submit" class="btn btn-success">Обновить</button>
         </form>
+        <p></p>
+        <form th:action="'/account/' + ${el.id} + '/remove'" method="post">
+            <button class="btn btn-warning" type="submit">Удалить</button>
+        </form>
+
     </div>
     <br>
     <div th:insert="blocks/footer :: footer"></div>

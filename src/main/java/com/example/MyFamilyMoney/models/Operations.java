@@ -27,6 +27,12 @@ public class Operations extends Transactions {
         this.item = item;
     }
 
+    public Operations(String description, Account account, LocalDateTime date, Item item, Long amount) {
+        super(amount, description, date);
+        this.account = account;
+        this.item = item;
+    }
+
     public Operations() {
     }
 

@@ -10,18 +10,13 @@
 
 <div class="container mt-5 mb-5">
     <h1>Добавление вида операции</h1>
-    <form action="/item/add" method="post">
+    <form action="/itemGroup/add" method="post">
         <input type="text" name="name" placeholder="Введите название" class="form-control"><br>
         <select name="typeOperation">
             <option th:each="typeOperation : ${T(com.example.MyFamilyMoney.models.TypeOperation).values()}"
                     th:value="${typeOperation}"
                     th:text="${typeOperation.displayValue}"></option>
         </select><br><br>
-        <select name="itemGroup">
-            <option th:each="itemGroups : ${itemGroups}"
-                    th:value="${itemGroups}"
-                    th:text="${itemGroups.name}"></option>
-        </select><br>
         <button type="submit" class="btn btn-success">Добавить вид операции</button>
 
     </form>

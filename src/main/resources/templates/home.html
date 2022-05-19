@@ -11,11 +11,21 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5">
-     <div th:each="el : ${accounts}" class="alert alert-info mt-2">
-        <a th:href="'/transactions/' + ${el.id}" style="text-decoration: none; ">
-            <p th:text="${el.name}"/>
-            <p th:text="${#numbers.formatDecimal(el.endBalance*0.01,1,2)} + ' ' + 'RUB'"/>
-        </a>
+    <p th:text="'Свой'+' '+'капитал'+' '+${#numbers.formatDecimal(capital*0.01,1,2)} + ' ' + 'RUB'"/>
+    <div th:each="el : ${accounts}" class="alert alert-info mt-2">
+        <table width="100%">
+            <tr>
+                <td width="98%">
+                    <a th:href="'/transactions/' + ${el.id}" style="text-decoration: none; ">
+                        <p th:text="${el.name}"/>
+                        <p th:text="${#numbers.formatDecimal(el.endBalance*0.01,1,2)} + ' ' + 'RUB'"/>
+                    </a>
+                </td>
+                <td>
+                    <a th:href="'/account/' + ${el.id} + '/edit'" class="nav-link active">...</a>
+                </td>
+            </tr>
+        </table>
     </div>
     <ul class="nav nav-pills">
         <li class="nav-item"><a href="/account/add" class="nav-link active" aria-current="page">Добавить счет</a></li>

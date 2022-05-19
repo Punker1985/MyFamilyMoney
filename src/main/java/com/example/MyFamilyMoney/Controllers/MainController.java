@@ -1,5 +1,6 @@
 package com.example.MyFamilyMoney.Controllers;
 
+import com.example.MyFamilyMoney.Utils;
 import com.example.MyFamilyMoney.models.*;
 import com.example.MyFamilyMoney.repo.AccountRepository;
 import com.example.MyFamilyMoney.repo.OperationsRepository;
@@ -30,8 +31,14 @@ public class MainController {
     @GetMapping("/")
     public String home(@CurrentSecurityContext(expression = "authentication?.name") String username, Model model) {
         User user = userRepository.findByUsername(username);
+        long capital = 0;
         Iterable<Account> accounts = accountRepository.findAllByUser(user);
+        for (Account i:accounts) {
+            capital = capital + i.getEndBalance();
+        }
+
         model.addAttribute("accounts", accounts);
+        model.addAttribute("capital", capital);
         return "home";
     }
 
@@ -70,6 +77,12 @@ public class MainController {
     public String about(Model model) {
         model.addAttribute("title", "О нас");
         return "about";
+    }
+
+    @GetMapping("/settings")
+    public String settings(Model model) {
+        model.addAttribute("title", "Настройки");
+        return "settings";
     }
 
 }

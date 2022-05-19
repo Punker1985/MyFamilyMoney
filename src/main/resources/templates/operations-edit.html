@@ -9,10 +9,13 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5 mb-5">
-    <h1>Редактирование операции</h1>
+    <h1>
+        <a th:href="''/transaction/' + ${el.id}'" style="text-decoration: none; color: black;"><-</a>
+        <span>Редактирование операции</span>
+    </h1>
     <div th:each="el : ${operations}">
         <form method="post">
-            <input type="text" th:value="${#numbers.formatDecimal(el.amount*0.01,1,2)}" name="amount" placeholder="Введите сумму операции" class="form-control"><br>
+            <input type="text" th:value="${#numbers.formatDecimal(el.amount*0.01,1,2,'POINT')}" name="amount" placeholder="Введите сумму операции" class="form-control"><br>
             <input type="datetime-local" th:value="${el.date}" id="localdate" name="date"/>
             <select name="account">
                 <option th:value="${el.account}" th:text="${el.account.getName}"></option>
@@ -27,7 +30,7 @@
                         th:text="${item.getName}"></option>
             </select>
             <select name="counteragent">
-                <option th:value="${el.counteragent}" th:text="${el.counteragent.getName}"></option>
+                <option th:if="${el.counteragent != null}" th:value="${el.counteragent}" th:text="${el.counteragent.getName}"></option>
                 <option th:each="counteragent : ${counteragents}"
                         th:value="${counteragent}"
                         th:text="${counteragent.getName}"></option>

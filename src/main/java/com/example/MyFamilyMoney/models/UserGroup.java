@@ -1,16 +1,16 @@
 package com.example.MyFamilyMoney.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 public class UserGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="user_group_id")
     private Long id;
     private String groupName, password;
+
 
     public UserGroup() {
     }

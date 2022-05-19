@@ -18,7 +18,7 @@
 
     <div th:each = "el : ${items}" class="alert alert-info mt-2">
         <p th:text="${el.name}"/>
-        <p th:text="${el.description}"/>
+        <p th:text="${el.itemGroup.name}"/>
         <p> <span th:text="${el.typeOperation.displayValue}"/></p>
         <a th:href="'/item/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
         <form th:action="'/item/' + ${el.id} + '/remove'" method="post">
